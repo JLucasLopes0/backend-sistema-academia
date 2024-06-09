@@ -3,6 +3,7 @@ package com.lopesdev.sistemaacademia.services;
 import com.lopesdev.sistemaacademia.dtos.AlunoDTO;
 import com.lopesdev.sistemaacademia.entities.Aluno;
 import com.lopesdev.sistemaacademia.repositories.AlunoRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,14 +34,9 @@ public class AlunoService {
         }
     }
 
-    public AlunoDTO findByIdAdmin(Long id) {
-        Optional<Aluno> optionalDeAluno = alunoRepository.findById(id);
-        if (optionalDeAluno.isPresent()) {
-            Aluno aluno = optionalDeAluno.get();
-            return new AlunoDTO(aluno, aluno.getEndereco());
-        } else {
-            return null;
-        }
+    public Aluno findByIdAdmin(Long id) {
+        Optional<Aluno> optionalAluno = alunoRepository.findById(id);
+        return optionalAluno.orElse(null);
     }
 
     public Aluno save(Aluno aluno) {
@@ -53,8 +49,12 @@ public class AlunoService {
         return alunoRepository.save(aluno);
     }
 
-    public void deleteById(Long id) {
+    public String deleteById(Long id) {
+        if (!alunoRepository.existsById(id)) {
+            throw new EntityNotFoundException("Não foi encontrado nenhum aluno com o ID fornecido. Favor verificar o ID.");
+        }
         alunoRepository.deleteById(id);
+        return "Aluno excluído com sucesso.";
     }
 
     public boolean existsById(Long id) {

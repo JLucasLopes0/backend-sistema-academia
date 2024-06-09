@@ -26,5 +26,3 @@ public interface AlunoRepository extends JpaRepository <Aluno, Long> {
     List<Aluno> encontrarAlunosPeloNomeDoPersonal(@Param("nomePersonal") String nomePersonal);
 
 }
-
-

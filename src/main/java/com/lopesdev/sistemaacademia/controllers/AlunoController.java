@@ -9,8 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import jakarta.validation.Valid;
@@ -22,37 +20,37 @@ public class AlunoController {
     @Autowired
     private AlunoService alunoService;
 
+    //Retorna todos os alunos do sistema (banco de dados).
     @GetMapping
     public List<Aluno> findAll(){
         return alunoService.findAll();
     }
 
+    //Atualiza o email de um aluno existente no banco de dados ou
+    //retorna uma resposta HTTP Not Found.
     @PatchMapping(value = "/{id}/atualizar-email")
     public ResponseEntity<String> atualizarEmailAluno (
             @PathVariable Long id,
             @RequestParam(name = "novoEmail") String novoEmail) {
-        //Verifica se existe um aluno com o ID fornecido
         if (!alunoService.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aluno não encontrado com o ID: " + id);
         }
-        //Atualiza o email do aluno com base em seu ID
         alunoService.atualizarEmail(id, novoEmail);
         return ResponseEntity.status(HttpStatus.OK).body("Email atualizado com sucesso para: " + novoEmail);
     }
 
+    //Retorna uma List<Aluno> com todos os alunos com o nome
+    //fornecido ou com todos os alunos do banco.
     @GetMapping(value="/buscar")
     public List<Aluno> buscarAlunoPorNome(
             @RequestParam(name = "nome", required = false) String nome) {
         if (nome == null || nome.isEmpty()) {
-            alunoService.findAll();
+            return alunoService.findAll();
         }
-        //Obtém todos os alunos
         List<Aluno> todosAlunos = alunoService.findAll();
-        //Filtra os alunos com base no nome
-        List<Aluno> resultado = todosAlunos.stream()
+        return todosAlunos.stream()
                 .filter(aluno -> aluno.getNome().contains(nome))
                 .collect(Collectors.toList());
-        return resultado;
     }
 
     /*
@@ -65,12 +63,12 @@ public class AlunoController {
         return alunoService.findById(id);
     }
 
-    @GetMapping(value="/admin/{id}")
     /*
-    findById para administradores do sistema, retorna todas
-    as informações do Aluno via AlunoDTO.
+    findById para administradores do sistema, retorna Aluno
+    em vez de AlunoDTO.
     */
-    public AlunoDTO findByIdAdmin(@PathVariable Long id) {
+    @GetMapping(value="/admin/{id}")
+    public Aluno findByIdAdmin(@PathVariable Long id) {
         return alunoService.findByIdAdmin(id);
     }
 
@@ -85,8 +83,8 @@ public class AlunoController {
     }
 
     @DeleteMapping(value="/{id}")
-    public void delete(@PathVariable Long id) {
-        alunoService.deleteById(id);
+    public String delete(@PathVariable Long id) {
+        return alunoService.deleteById(id);
     }
 
    @GetMapping(value="/idademaiorque")

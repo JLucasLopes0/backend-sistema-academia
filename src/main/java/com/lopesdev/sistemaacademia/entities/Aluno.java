@@ -50,6 +50,9 @@ public class Aluno {
         this.personal = personal;
     }
 
+    public Aluno(String nome) {
+    }
+
     public long getId() {
         return id;
     }

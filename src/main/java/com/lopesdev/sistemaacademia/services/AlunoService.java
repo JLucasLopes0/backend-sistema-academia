@@ -5,10 +5,13 @@ import com.lopesdev.sistemaacademia.entities.Aluno;
 import com.lopesdev.sistemaacademia.repositories.AlunoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AlunoService {
@@ -57,18 +60,15 @@ public class AlunoService {
         return "Aluno excluído com sucesso.";
     }
 
-    public boolean existsById(Long id) {
-        return alunoRepository.existsById(id);
-    }
-
-    public void atualizarEmail(Long id, String novoEmail) {
+    public ResponseEntity<String> atualizarEmail(Long id, String novoEmail) {
         Optional<Aluno> alunoOptional = alunoRepository.findById(id);
         if (alunoOptional.isPresent()) {
             Aluno aluno = alunoOptional.get();
             aluno.setEmail(novoEmail);
             alunoRepository.save(aluno);
+            return ResponseEntity.status(HttpStatus.OK).body("Email atualizado com sucesso para: " + novoEmail);
         } else {
-            throw new RuntimeException("Aluno não encontrado com o ID: " + id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aluno não encontrado com o ID: " + id);
         }
     }
 
@@ -78,6 +78,16 @@ public class AlunoService {
 
     public List<Aluno> encontrarAlunosPeloNomeDoPersonal(String nomePersonal) {
         return alunoRepository.encontrarAlunosPeloNomeDoPersonal(nomePersonal);
+    }
+
+    public List<Aluno> buscarAlunosPorNome(String nome) {
+        if (nome == null || nome.isEmpty()) {
+            return findAll();
+        }
+        List<Aluno> todosAlunos = findAll();
+        return todosAlunos.stream()
+                .filter(aluno -> aluno.getNome().contains(nome))
+                .collect(Collectors.toList());
     }
 
 }

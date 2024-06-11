@@ -32,25 +32,15 @@ public class AlunoController {
     public ResponseEntity<String> atualizarEmailAluno (
             @PathVariable Long id,
             @RequestParam(name = "novoEmail") String novoEmail) {
-        if (!alunoService.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aluno não encontrado com o ID: " + id);
-        }
-        alunoService.atualizarEmail(id, novoEmail);
-        return ResponseEntity.status(HttpStatus.OK).body("Email atualizado com sucesso para: " + novoEmail);
+        return alunoService.atualizarEmail(id, novoEmail);
     }
 
-    //Retorna uma List<Aluno> com todos os alunos com o nome
+    //Retorna uma List<Aluno> com todos os alunos c/ o nome
     //fornecido ou com todos os alunos do banco.
     @GetMapping(value="/buscar")
-    public List<Aluno> buscarAlunoPorNome(
+    public List<Aluno> buscarAlunosPorNome(
             @RequestParam(name = "nome", required = false) String nome) {
-        if (nome == null || nome.isEmpty()) {
-            return alunoService.findAll();
-        }
-        List<Aluno> todosAlunos = alunoService.findAll();
-        return todosAlunos.stream()
-                .filter(aluno -> aluno.getNome().contains(nome))
-                .collect(Collectors.toList());
+        return alunoService.buscarAlunosPorNome(nome);
     }
 
     /*

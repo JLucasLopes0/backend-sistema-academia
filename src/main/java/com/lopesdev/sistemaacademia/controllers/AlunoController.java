@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import jakarta.validation.Valid;
 
 @RestController
@@ -20,7 +19,8 @@ public class AlunoController {
     @Autowired
     private AlunoService alunoService;
 
-    //Retorna todos os alunos do sistema (banco de dados).
+    //Retorna todos os alunos do sistema (banco de dados)
+    //expondo todas as propriedades deles (retorna Aluno em vez de AlunoDTO).
     @GetMapping
     public List<Aluno> findAll(){
         return alunoService.findAll();
@@ -63,13 +63,15 @@ public class AlunoController {
     }
 
     @PostMapping
-    public Aluno insert(@RequestBody @Valid Aluno aluno) {
-        return alunoService.save(aluno);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void insert(@RequestBody @Valid Aluno aluno) {
+        alunoService.save(aluno);
     }
 
     @PutMapping(value="/{id}")
-    public Aluno update(@RequestBody Aluno aluno) {
-        return alunoService.save(aluno);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void update(@RequestBody Aluno aluno) {
+        alunoService.save(aluno);
     }
 
     @DeleteMapping(value="/{id}")

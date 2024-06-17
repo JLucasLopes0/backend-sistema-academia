@@ -2,6 +2,7 @@ package com.lopesdev.sistemaacademia.entities;
 
 import com.lopesdev.sistemaacademia.enums.EnumTipoTreino;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDate;
@@ -13,14 +14,15 @@ public class Aluno {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    @NotBlank(message = "O nome deve ser informado")
     private String nome;
 
+    @NotBlank(message = "Email é obrigatório")
+    @Email(message = "Email deve ser válido")
     private String email;
 
-    private int idade;
+    private Integer idade;
 
     private LocalDate dataInscricao;
 
@@ -39,7 +41,7 @@ public class Aluno {
     public Aluno() {
     }
 
-    public Aluno(long id, String nome, String email, int idade, LocalDate dataInscricao, String endereco, EnumTipoTreino tipoTreino, Personal personal) {
+    public Aluno(Long id, String nome, String email, Integer idade, LocalDate dataInscricao, String endereco, EnumTipoTreino tipoTreino, Personal personal) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -53,11 +55,11 @@ public class Aluno {
     public Aluno(String nome) {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -77,11 +79,11 @@ public class Aluno {
         this.email = email;
     }
 
-    public int getIdade() {
+    public Integer getIdade() {
         return idade;
     }
 
-    public void setIdade(int idade) {
+    public void setIdade(Integer idade) {
         this.idade = idade;
     }
 
@@ -124,5 +126,5 @@ public class Aluno {
     public void setPagamentos(List<Pagamento> pagamentos) {
         this.pagamentos = pagamentos;
     }
-
+    
 }

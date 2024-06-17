@@ -42,14 +42,8 @@ public class AlunoService {
         return optionalAluno.orElse(null);
     }
 
-    public Aluno save(Aluno aluno) {
-        if (aluno.getEmail() == null || aluno.getEmail().isEmpty()) {
-            throw new IllegalArgumentException("Student email is required");
-        }
-        if (aluno.getDataInscricao() == null) {
-            throw new IllegalArgumentException("Student email is required");
-        }
-        return alunoRepository.save(aluno);
+    public void save(Aluno aluno) {
+        alunoRepository.save(aluno);
     }
 
     public String deleteById(Long id) {

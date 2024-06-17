@@ -4,47 +4,35 @@ import com.lopesdev.sistemaacademia.enums.EnumStatusPagamento;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+
 
 @Entity
 @Table(name = "tb_pagamento")
 public class Pagamento {
 
     @Id
-    private long idPagamento;
+    private Long idPagamento;
 
     private BigDecimal valorDoPagamento;
 
     @Enumerated(EnumType.STRING)
     private EnumStatusPagamento statusDoPagamento;
 
-    private int mes;
-    private int ano;
+    private LocalDate dataPagamento;
 
     @ManyToOne
     @JoinColumn(name = "aluno_id")
     private Aluno aluno;
 
-    public int getMes() {
-        return mes;
+    public Pagamento() {
     }
 
-    public void setMes(int mes) {
-        this.mes = mes;
-    }
-
-    public int getAno() {
-        return ano;
-    }
-
-    public void setAno(int ano) {
-        this.ano = ano;
-    }
-
-    public long getIdPagamento() {
+    public Long getIdPagamento() {
         return idPagamento;
     }
 
-    public void setIdPagamento(long idPagamento) {
+    public void setIdPagamento(Long idPagamento) {
         this.idPagamento = idPagamento;
     }
 
@@ -70,9 +58,6 @@ public class Pagamento {
 
     public void setAluno(Aluno aluno) {
         this.aluno = aluno;
-    }
-
-    public Pagamento() {
     }
 
 }

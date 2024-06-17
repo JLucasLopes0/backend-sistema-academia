@@ -85,8 +85,8 @@ public class AlunoServiceTest {
     @Test
     public void BuscarAlunosPorNomeTest_NomeExists() {
         List<Aluno> mockAlunos = List.of(
-                new Aluno(1, "Rogerio Couto", "rogeriocouto@example.com", 24, LocalDate.of(2024, 3, 5), "Rua das Hortas, 123", CARDIO, null),
-                new Aluno(2, "Maria Silva", "mariasilva@example.com", 30, LocalDate.of(2024, 2, 10), "Rua das Oliveiras, 123 - Centro", HIIT, null)
+                new Aluno(1L, "Rogerio Couto", "rogeriocouto@example.com", 24, LocalDate.of(2024, 3, 5), "Rua das Hortas, 123", CARDIO, null),
+                new Aluno(2L, "Maria Silva", "mariasilva@example.com", 30, LocalDate.of(2024, 2, 10), "Rua das Oliveiras, 123 - Centro", HIIT, null)
         );
         String nome = "Rogerio";
         when(alunoRepository.findAll()).thenReturn(mockAlunos);

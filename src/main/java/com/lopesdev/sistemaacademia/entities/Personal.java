@@ -16,6 +16,10 @@ public class Personal {
     @OneToMany(mappedBy = "personal")
     private List<Aluno> alunos;
 
+    @Lob
+    @Column(name = "cip")
+    public byte[] cip;
+
     public Personal() {
     }
 
@@ -41,6 +45,14 @@ public class Personal {
 
     public void setAlunos(List<Aluno> alunos) {
         this.alunos = alunos;
+    }
+
+    public byte[] getCip() {
+        return cip;
+    }
+
+    public void setCip(byte[] cip) {
+        this.cip = cip;
     }
 
 }

@@ -5,7 +5,9 @@ import com.lopesdev.sistemaacademia.repositories.PersonalRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,4 +41,10 @@ public class PersonalService {
         return personal;
     }
 
+    public void cadastrarPersonal(Personal personal, MultipartFile cip) throws IOException {
+        //Salva o arquivo como bytes
+        personal.setCip(cip.getBytes());
+        //Salva o personal no banco de dados
+        personalRepository.save(personal);
+    }
 }
